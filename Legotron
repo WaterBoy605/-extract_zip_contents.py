@@ -30,3 +30,7 @@ def extract_and_print(zip_path):
 
 if __name__ == "__main__":
     extract_and_print(ZIP_FILE)
+
+        ZIP_FILE = llama-main.zip
+
+
