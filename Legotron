@@ -1,0 +1,32 @@
+import zipfile
+import os
+
+# Path to your zip file
+ZIP_FILE = 'your-archive.zip'  # Replace with your actual .zip file name
+
+# File types you want to extract and print
+ALLOWED_EXTENSIONS = ['.txt', '.html', '.js', '.css', '.py', '.json']
+
+def is_code_file(filename):
+    return any(filename.endswith(ext) for ext in ALLOWED_EXTENSIONS)
+
+def extract_and_print(zip_path):
+    if not os.path.isfile(zip_path):
+        print(f"❌ ZIP file not found: {zip_path}")
+        return
+
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall("unzipped_files")
+
+    print(f"\n📦 Extracted files from {zip_path}:\n")
+    for root, dirs, files in os.walk("unzipped_files"):
+        for filename in files:
+            full_path = os.path.join(root, filename)
+            rel_path = os.path.relpath(full_path, "unzipped_files")
+            if is_code_file(filename):
+                print(f"\n--- {rel_path} ---")
+                with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    print(f.read())
+
+if __name__ == "__main__":
+    extract_and_print(ZIP_FILE)
